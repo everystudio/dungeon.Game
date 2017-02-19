@@ -22,6 +22,8 @@ public class UIDeck : CPanel {
 		{
 			IconBattleCard script = PrefabManager.Instance.MakeScript<IconBattleCard>("Prefab/BattleCardIcon", m_goRootIcon);
 			script.Initialize(param);
+			//Debug.LogError(script.gameObject.transform.localScale);
+			script.gameObject.transform.localScale = Vector3.one;
 		}
 
 	}
