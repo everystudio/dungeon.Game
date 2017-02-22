@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DataManager : DataManagerBase<DataManager> {
 
@@ -11,6 +12,12 @@ public class DataManager : DataManagerBase<DataManager> {
 
 	public override void Initialize()
 	{
+		// これは消しません
+		SetDontDestroy(true);
+		//Debug.LogError(QualitySettings.vSyncCount);
+		QualitySettings.vSyncCount = 0;
+		Application.targetFrameRate = 60;
+
 		//Debug.LogError("datamanager.initialize");
 		base.Initialize();
 		Card datacard = new Card();
@@ -23,6 +30,8 @@ public class DataManager : DataManagerBase<DataManager> {
 		{
 			cardInfo.Add(param.card_type, param);
 		}
+
+		ftime = 0.0f;
 	}
 
 	public CardInfoParam GetCardInfoParam(string _cardType)
@@ -31,6 +40,21 @@ public class DataManager : DataManagerBase<DataManager> {
 		cardInfo.TryGetValue(_cardType, out ret);
 		return ret;
 	}
-	
+	int frameCount;
+	float ftime;
+	[SerializeField]
+	private Text FPS;
+	void Update()
+	{
+		frameCount += 1;
+		ftime += Time.deltaTime;
+		if( 1.0f < ftime)
+		{
+			FPS.text = string.Format("FPS:{0:f2}", frameCount/ ftime);
+			frameCount = 0;
+			ftime -= 1.0f;
+		}
+
+	}
 
 }

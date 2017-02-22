@@ -18,6 +18,14 @@ public class IconBattleCard : MonoBehaviour {
 	[SerializeField]
 	private Image m_imgFrame;
 
+	[SerializeField]
+	private bool m_bIsField;
+
+	public void Initialize(CardParam _param , bool _bIsField)
+	{
+		m_bIsField = _bIsField;
+		Initialize(_param);
+	}
 	public void Initialize(CardParam _param)
 	{
 		m_txtPower.text = string.Format("{0}", _param.power);
@@ -26,6 +34,25 @@ public class IconBattleCard : MonoBehaviour {
 		CardInfoParam infoParam = DataManager.Instance.GetCardInfoParam(_param.card_type);
 
 		m_imgIcon.sprite = SpriteManager.Instance.LoadSprite(infoParam.filename);
+
+		if( m_bIsField)
+		{
+			gameObject.GetComponent<Button>().onClick.AddListener(OnClickField);
+
+		}
+		else
+		{
+			gameObject.GetComponent<Button>().onClick.AddListener(OnClick);
+		}
+	}
+
+	private void OnClickField()
+	{
+		FloorRoute.Instance.MoveStart(3);
+	}
+	private void OnClick()
+	{
+
 	}
 
 
