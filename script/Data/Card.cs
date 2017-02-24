@@ -20,6 +20,15 @@ public class Card : CsvData<CardParam> {
 		SKILL,
 		CURE,
 		COUNTER,
+	}
+
+	public enum STATUS
+	{
+		READY		= 0,
+		FIELD		,
+		FIELD_USED	,
+		USED		,
+		MAXQ		,
 
 	}
 

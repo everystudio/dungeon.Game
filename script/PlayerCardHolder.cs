@@ -5,19 +5,26 @@ using UnityEngine;
 public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 	[SerializeField]
 	private IconBattleCard[] fieldCardArr;
-	
+
 	public override void Initialize()
 	{
 		base.Initialize();
 
-		CardParam param = new CardParam();
-		param.card_type = "attack";
-		param.power = 4567;
-		param.speed = 123;
 
-		foreach( IconBattleCard icon in fieldCardArr)
+		List<CardParam> deckCardParam = new List<CardParam>();
+		deckCardParam.Clear();
+
+		foreach (CardParam param in DataManager.Instance.playerQuestDeck.list)
 		{
-			icon.Initialize(param,true);
+			if( param.status == 1 || param.status == 2)
+			{
+				deckCardParam.Add(param);
+			}
+		}
+
+		for( int i = 0; i < fieldCardArr.Length; i++) 
+		{
+			fieldCardArr[i].Initialize(deckCardParam[i],true);
 		}
 	}
 

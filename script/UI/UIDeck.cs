@@ -6,7 +6,7 @@ public class UIDeck : CPanel {
 
 	[SerializeField]
 	private GameObject m_goRootIcon;
-	public List<IconBattleCard> show_deck = new List<IconBattleCard>();
+	//public List<IconBattleCard> show_deck = new List<IconBattleCard>();
 
 	protected override void panelStart()
 	{

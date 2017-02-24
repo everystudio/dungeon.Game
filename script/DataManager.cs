@@ -7,6 +7,8 @@ public class DataManager : DataManagerBase<DataManager> {
 
 	public List<CardParam> show_card_list;
 
+	public Card playerQuestDeck;
+
 	public Dictionary<string, CardInfoParam> cardInfo = new Dictionary<string, CardInfoParam>();
 
 
@@ -30,6 +32,11 @@ public class DataManager : DataManagerBase<DataManager> {
 		{
 			cardInfo.Add(param.card_type, param);
 		}
+
+		// 読めなかったとき対応が必要
+		Debug.LogError("初期デッキデータが必要になります");
+		playerQuestDeck = new Card();
+		playerQuestDeck.LoadMulti("data/deck_quest");
 
 		ftime = 0.0f;
 	}
