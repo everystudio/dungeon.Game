@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FloorRoute : Singleton<FloorRoute> {
 
@@ -71,9 +72,13 @@ public class FloorRoute : Singleton<FloorRoute> {
 		moveCheck();			
 	}
 
+
+	public UnityEvent OnMoveFinished = new UnityEvent();
+
 	private void moveFinished()
 	{
 		//Debug.LogError("moveFinished");
+		OnMoveFinished.Invoke();
 	}
 
 	

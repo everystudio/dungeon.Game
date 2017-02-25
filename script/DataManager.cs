@@ -41,7 +41,7 @@ public class DataManager : DataManagerBase<DataManager> {
 		playerQuestDeck = new Card();
 		playerQuestDeck.LoadMulti("data/deck_quest");
 
-		string strUrl = string.Format("https://spreadsheets.google.com/feeds/worksheets/{0}/public/basic", "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I");
+		//string strUrl = string.Format("https://spreadsheets.google.com/feeds/worksheets/{0}/public/basic", "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I");
 		//EveryStudioLibrary.CommonNetwork.Instance.Recieve(strUrl, onRecievedNetworkData);
 
 		stage = new Stage();
