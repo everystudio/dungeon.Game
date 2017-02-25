@@ -5,10 +5,11 @@ using UnityEngine;
 public class FloorRoute : Singleton<FloorRoute> {
 
 	public Camera m_camMain;
-	public GameObject[] m_goRouteArr;
 
 	public int m_iIndex;
 	public int m_iMoveRest;
+
+	public StageParam m_stageParam;
 
 	void Start()
 	{
@@ -18,41 +19,28 @@ public class FloorRoute : Singleton<FloorRoute> {
 	public void MoveStart(int _iNum)
 	{
 		m_iMoveRest = _iNum;
-		moveEnd();
+		moveCheck();
 	}
 	private void move( int _iTargetIndex)
 	{
-		/*
+		StageParam param = DataManager.Instance.stage.list[_iTargetIndex];
+		m_stageParam = param;
 		iTween.MoveTo(m_camMain.gameObject,
 			iTween.Hash(
 				"time", 0.65f,
 				"islocal", true,
-				"x", m_goRouteArr[_iTargetIndex].transform.localPosition.x,
-				"z", m_goRouteArr[_iTargetIndex].transform.localPosition.z,
+				"x", param.px,
+				"y", param.py,
+				"z", param.pz,
 				"oncomplete", "moveEnd",
 				"oncompletetarget", gameObject
 			)
 		);
-		*/
-		iTween.MoveTo(m_camMain.gameObject,
-			iTween.Hash(
-				"time", 0.65f,
-				"islocal", true,
-				"x", DataManager.Instance.stage.list[m_iIndex].px,
-				"y", DataManager.Instance.stage.list[m_iIndex].py,
-				"z", DataManager.Instance.stage.list[m_iIndex].pz,
-				"oncomplete", "moveEnd",
-				"oncompletetarget", gameObject
-			)
-		);
-
 	}
 
-	private void moveEnd()
+	private void moveCheck()
 	{
-		Debug.LogError(string.Format("index:{0} rest:{1}", m_iIndex, m_iMoveRest));
-
-		if ( 0 < m_iMoveRest )
+		if (0 < m_iMoveRest)
 		{
 			m_iIndex = DataManager.Instance.stage.list[m_iIndex].next_id;
 			m_iMoveRest -= 1;
@@ -62,6 +50,25 @@ public class FloorRoute : Singleton<FloorRoute> {
 		{
 			moveFinished();
 		}
+	}
+
+	private void turn(StageParam _param)
+	{
+		iTween.RotateTo(m_camMain.gameObject,
+			iTween.Hash(
+				"time", 0.65f,
+				"islocal", true,
+				"x", _param.rx,
+				"y", _param.ry,
+				"z", _param.rz
+			)
+		);
+	}
+
+	private void moveEnd()
+	{
+		turn(m_stageParam);
+		moveCheck();			
 	}
 
 	private void moveFinished()
