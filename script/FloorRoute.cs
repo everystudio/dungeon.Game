@@ -22,12 +22,25 @@ public class FloorRoute : Singleton<FloorRoute> {
 	}
 	private void move( int _iTargetIndex)
 	{
+		/*
 		iTween.MoveTo(m_camMain.gameObject,
 			iTween.Hash(
-				"time",0.65f,
-				"islocal",true,
+				"time", 0.65f,
+				"islocal", true,
 				"x", m_goRouteArr[_iTargetIndex].transform.localPosition.x,
 				"z", m_goRouteArr[_iTargetIndex].transform.localPosition.z,
+				"oncomplete", "moveEnd",
+				"oncompletetarget", gameObject
+			)
+		);
+		*/
+		iTween.MoveTo(m_camMain.gameObject,
+			iTween.Hash(
+				"time", 0.65f,
+				"islocal", true,
+				"x", DataManager.Instance.stage.list[m_iIndex].px,
+				"y", DataManager.Instance.stage.list[m_iIndex].py,
+				"z", DataManager.Instance.stage.list[m_iIndex].pz,
 				"oncomplete", "moveEnd",
 				"oncompletetarget", gameObject
 			)
@@ -37,10 +50,11 @@ public class FloorRoute : Singleton<FloorRoute> {
 
 	private void moveEnd()
 	{
-		m_iIndex += 1;
+		Debug.LogError(string.Format("index:{0} rest:{1}", m_iIndex, m_iMoveRest));
 
-		if ( 0 < m_iMoveRest && m_iIndex <= m_goRouteArr.Length )
+		if ( 0 < m_iMoveRest )
 		{
+			m_iIndex = DataManager.Instance.stage.list[m_iIndex].next_id;
 			m_iMoveRest -= 1;
 			move(m_iIndex);
 		}

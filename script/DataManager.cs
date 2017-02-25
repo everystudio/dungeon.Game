@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class DataManager : DataManagerBase<DataManager> {
 	public List<CardParam> show_card_list;
 
 	public Card playerQuestDeck;
+
+	public Stage stage;
 
 	public Dictionary<string, CardInfoParam> cardInfo = new Dictionary<string, CardInfoParam>();
 
@@ -38,8 +41,40 @@ public class DataManager : DataManagerBase<DataManager> {
 		playerQuestDeck = new Card();
 		playerQuestDeck.LoadMulti("data/deck_quest");
 
+		string strUrl = string.Format("https://spreadsheets.google.com/feeds/worksheets/{0}/public/basic", "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I");
+		//EveryStudioLibrary.CommonNetwork.Instance.Recieve(strUrl, onRecievedNetworkData);
+
+		stage = new Stage();
+		stage.OnRecieveData.AddListener(OnRecieveStageData);
+		stage.LoadStageData("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I", "stage1-1");
 		ftime = 0.0f;
 	}
+
+	private void OnRecieveStageData(List<StageParam> arg0)
+	{
+	}
+
+	public void onRecievedNetworkData(EveryStudioLibrary.TNetworkData _networkData)
+	{
+		/*
+		Debug.LogError(_networkData.m_strData);
+
+		int index = _networkData.m_strData.IndexOf("stage1-1");
+
+		int index2 = _networkData.m_strData.IndexOf("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/", index);
+		int index3 = _networkData.m_strData.IndexOf("/", index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length);
+		Debug.LogError(index);
+		Debug.LogError(index2);
+		Debug.LogError(index3);
+		Debug.LogError(_networkData.m_strData.Substring(index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length, index3 - (index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length)));
+		*/
+
+		string ret = EveryStudioLibrary.CommonNetwork.ParseSpreadSheetSerial("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I", "stage1-1", _networkData.m_strData);
+		Debug.LogError(ret);
+
+	}
+
+
 
 	public CardInfoParam GetCardInfoParam(string _cardType)
 	{
