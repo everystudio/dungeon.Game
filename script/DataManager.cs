@@ -8,15 +8,44 @@ public class DataManager : DataManagerBase<DataManager> {
 
 	public List<CardParam> show_card_list;
 
+	public DataKvs playerQuestData;
 	public Card playerQuestDeck;
 
 	public Stage stage;
 
 	public Dictionary<string, CardInfoParam> cardInfo = new Dictionary<string, CardInfoParam>();
 
+	public int m_iSaveLock;
+	public bool m_bSave;
+	private bool m_bSavePre;
+
+	public void SaveLock()
+	{
+		m_iSaveLock += 1;
+	}
+	public void SaveUnlock()
+	{
+		if( 0 < m_iSaveLock)
+		{
+			m_iSaveLock -= 1;
+		}
+		return;
+	}
+
+	public void Save()
+	{
+		if (0 < m_iSaveLock)
+		{
+			Debug.LogError("try save but lock now");
+			return;
+		}
+		playerQuestDeck.Save();
+	}
+
 
 	public override void Initialize()
 	{
+		m_iSaveLock = 0;
 		// これは消しません
 		SetDontDestroy(true);
 		//Debug.LogError(QualitySettings.vSyncCount);
@@ -37,9 +66,14 @@ public class DataManager : DataManagerBase<DataManager> {
 		}
 
 		// 読めなかったとき対応が必要
+		playerQuestData = new DataKvs();
+		playerQuestData.LoadMulti("data/player_quest_data");
+		playerQuestData.SetSaveFilename("data/player_quest_data");
+
 		Debug.LogError("初期デッキデータが必要になります");
 		playerQuestDeck = new Card();
 		playerQuestDeck.LoadMulti("data/deck_quest");
+		playerQuestDeck.SetSaveFilename("data/deck_quest");
 
 		//string strUrl = string.Format("https://spreadsheets.google.com/feeds/worksheets/{0}/public/basic", "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I");
 		//EveryStudioLibrary.CommonNetwork.Instance.Recieve(strUrl, onRecievedNetworkData);
@@ -97,6 +131,14 @@ public class DataManager : DataManagerBase<DataManager> {
 			ftime -= 1.0f;
 		}
 
+		if( m_bSave)
+		{
+			m_bSave = false;
+			Save();
+		}
+
 	}
+
+	
 
 }

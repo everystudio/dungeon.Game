@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 
@@ -16,13 +17,19 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 		NONE		= 0,
 		IDLE		,
 		MOVING		,
+		MOVE_END	,
 		BATTLE		,
 		MAX			,
 	}
 	public STEP m_eStep;
 	public STEP m_eStepPre;
+	private int m_iReloadCount;
 	public int m_iCheckCount;
 	public bool m_bRequestShuffle;
+
+	public UnityEvent OnFinishedMoveEvent = new UnityEvent();
+	public UnityEvent OnEndReloadEvent = new UnityEvent();
+	public UnityEvent OnEndShuffleEvent = new UnityEvent();
 
 	public void Reload()
 	{
@@ -59,36 +66,26 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 		}
 
 		iIndex = 0;
-		m_iCheckCount = 0;
-
-		// 次のデッキを繰り出しで大丈夫かどうかチェック
-		m_bRequestShuffle = false;
-		if( fieldCardList.Count != m_posObjectArr.Length)
-		{
-			m_bRequestShuffle = true;
-		}
+		m_iReloadCount = 0;
 
 		foreach (IconBattleCard card in fieldCardList)
 		{
 			float fDelayInterval = 0.1f;
-			m_iCheckCount += 1;
-			card.OnEndResetPosition.AddListener(OnEndResetPosition);
+			m_iReloadCount += 1;
+			card.OnEndResetPosition.AddListener(OnEndReload);
 			card.ResetPosition(fDelayInterval * iIndex, m_posDeck);
 			iIndex += 1;
 		}
-		if( m_bRequestShuffle && fieldCardList.Count == 0)
-		{
-			ShuffleReload();
-		}
-		// 手元のカードのターゲットは左に寄せる
 	}
 
+	/*
 	// とりあえず演出とかはいったん無しで
 	public void ShuffleReload()
 	{
 		DataManager.Instance.playerQuestDeck.Shuffle();
 		Reload();
 	}
+	*/
 
 	public override void Initialize()
 	{
@@ -146,21 +143,35 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 			iPosIndex += 1;
 		}
 	}
-	public void OnEndResetPosition(IconBattleCard _icon)
+	private void OnEndResetPosition(IconBattleCard _icon)
 	{
 		_icon.OnEndResetPosition.RemoveListener(OnEndResetPosition);
 		m_iCheckCount -= 1;
-		if(m_iCheckCount == 0)
+		if (m_iCheckCount == 0)
 		{
+			//Debug.LogError("end of ResetPosition");
+			// ここでリロードが完了したことを伝える
+			/*
 			Debug.LogError("allend");
 			if (m_bRequestShuffle)
 			{
 				ShuffleReload();
 			}
+			*/
+		}
+	}
+	private void OnEndReload(IconBattleCard _icon)
+	{
+		_icon.OnEndResetPosition.RemoveListener(OnEndReload);
+		m_iReloadCount -= 1;
+		if (m_iReloadCount == 0)
+		{
+			//Debug.LogError("end of reload");
+			OnEndReloadEvent.Invoke();
 		}
 	}
 
-	public void OnClickCard( IconBattleCard _icon )
+	private void OnClickCard( IconBattleCard _icon )
 	{
 		switch( m_eStep)
 		{
@@ -168,6 +179,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 				/*
 				_icon.RefreshDisp();
 				*/
+				DataManager.Instance.SaveLock();
 				_icon.param.status = (int)Card.STATUS.USED;
 				_icon.OnActionBattleUsed.AddListener(OnActionBattleCardUsed);
 				_icon.ActionBattleUse();
@@ -198,19 +210,35 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 		}
 	}
 
-	public void OnMoveFinished()
+	private void OnMoveFinished()
 	{
 		//Debug.LogError("OnMoveFinished");
 		FloorRoute.Instance.OnMoveFinished.RemoveListener(OnMoveFinished);
-		m_eStep = STEP.IDLE;
-
+		/*
 		if( 1 == fieldCardList.Count)
 		{
 			Reload();
 		}
+		else
+		{
+			//DataManager.Instance.SaveUnlock();
+		}
+		*/
 
+		// 外部から管理するための状態もしくはgamemainとかに伝える
+		m_eStep = STEP.MOVE_END;
+		//DataManager.Instance.SaveUnlock();
+
+		//Debug.LogError("please add move end action");
+		OnFinishedMoveEvent.Invoke();
+		/*
+		// リロードが必要
+		if (1 == fieldCardList.Count)
+		{
+			Reload();
+		}
+		*/
 
 	}
-
 
 }

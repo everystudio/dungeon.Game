@@ -28,10 +28,10 @@ public class IconBattleCard : MonoBehaviourEx {
 
 	public GameObject goTarget;
 	
-	private float m_fAppearDelay;
+	//private float m_fAppearDelay;
 	public void ResetPosition( float _fDelay, GameObject _posReset )
 	{
-		m_fAppearDelay = _fDelay;
+		//m_fAppearDelay = _fDelay;
 		Invoke("_appear", _fDelay+0.1f );
 	}
 	private void _appear()
