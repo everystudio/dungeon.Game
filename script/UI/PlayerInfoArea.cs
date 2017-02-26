@@ -16,6 +16,9 @@ public class PlayerInfoArea : MonoBehaviourEx {
 	[SerializeField]
 	private RectTransform m_rtCardHolder;
 
+	[SerializeField]
+	private GridLayoutGroup m_rtCardHolderGridLayout;
+
 	void Awake()
 	{
 		m_rtSelf = gameObject.GetComponent<RectTransform>();
@@ -49,7 +52,8 @@ public class PlayerInfoArea : MonoBehaviourEx {
 			m_rtCardHolder.anchorMax = new Vector2(1, 0);
 			m_rtCardHolder.offsetMin = new Vector2(0, 60);
 			m_rtCardHolder.offsetMax = new Vector2(0, 160);
-			m_rtCardHolder.sizeDelta = new Vector2(0, 100); m_rtCardHolder.GetComponent<GridLayoutGroup>().spacing = new Vector2(20.0f, 0.0f);
+			m_rtCardHolder.sizeDelta = new Vector2(0, 100);
+			m_rtCardHolderGridLayout.spacing = new Vector2(20.0f, 0.0f);
 
 		}
 		else
@@ -78,7 +82,7 @@ public class PlayerInfoArea : MonoBehaviourEx {
 			m_rtCardHolder.offsetMin = new Vector2(0, 130);
 			m_rtCardHolder.offsetMax = new Vector2(0, 230);
 			m_rtCardHolder.sizeDelta = new Vector2(0, 100);
-			m_rtCardHolder.GetComponent<GridLayoutGroup>().spacing = new Vector2(3.0f, 0.0f);
+			m_rtCardHolderGridLayout.spacing = new Vector2(3.0f, 0.0f);
 
 		}
 	}

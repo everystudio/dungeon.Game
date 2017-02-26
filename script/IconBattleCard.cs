@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Button))]
-public class IconBattleCard : MonoBehaviour {
+public class IconBattleCard : MonoBehaviourEx {
 
 	public CardParam param { get; set; }
 	//private CardParam m_cardParam;
@@ -25,6 +25,35 @@ public class IconBattleCard : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject m_goUsed;
+
+	public GameObject goTarget;
+	
+	private float m_fAppearDelay;
+	public void ResetPosition( float _fDelay, GameObject _posReset )
+	{
+		m_fAppearDelay = _fDelay;
+		Invoke("_appear", _fDelay+0.1f );
+	}
+	private void _appear()
+	{
+		float fAppearTime = 0.3f;
+		iTween.MoveTo(gameObject,
+			iTween.Hash(
+				"time", fAppearTime,
+				"oncomplete", "endResetPosition",
+				"x", goTarget.transform.position.x,
+				"y", goTarget.transform.position.y,
+				"z", goTarget.transform.position.z
+				));
+
+		iTween.ScaleTo(gameObject,
+			iTween.Hash(
+				"time", fAppearTime,
+				"x", 1.0f,
+				"y", 1.0f,
+				"z", 1.0f
+				));
+	}
 
 	/*
 	[SerializeField]
@@ -62,15 +91,53 @@ public class IconBattleCard : MonoBehaviour {
 		m_btn.interactable = !bUsed;
 	}
 
-	public class UUnityEventIconBattleCard : UnityEvent<IconBattleCard>
+	public class EventIconBattleCard : UnityEvent<IconBattleCard>
 	{
 	}
-	public UUnityEventIconBattleCard OnClickEvent = new UUnityEventIconBattleCard();
+	public EventIconBattleCard OnClickEvent = new EventIconBattleCard();
 
 	private void OnClick()
 	{
 		OnClickEvent.Invoke(this);
 	}
 
+
+	public void ActionBattleUse()
+	{
+		float actTime = 0.5f;
+		iTween.MoveAdd(gameObject,
+			iTween.Hash(
+				"time", actTime,
+				"islocal", true,
+				"y", 30,
+				"oncomplete", "actEnd",
+				"oncompletetarget", gameObject
+			)
+		);
+
+		iTween.ValueTo(gameObject,
+			iTween.Hash(
+				"time", actTime,
+				"onupdate" , "SetAlphaAll",
+				"from",1.0f,
+				"to",0.0f));
+	}
+	public EventIconBattleCard OnActionBattleUsed = new EventIconBattleCard();
+	private void actEnd()
+	{
+		OnActionBattleUsed.Invoke(this);
+	}
+	public EventIconBattleCard OnEndResetPosition = new EventIconBattleCard();
+	private void endResetPosition()
+	{
+		OnEndResetPosition.Invoke(this);
+	}
+
+	/*
+	public void SetAlpha(float _fAlpha)
+	{
+		SetAlphaAll(gameObject, _fAlpha);
+	}
+	*/
 
 }
