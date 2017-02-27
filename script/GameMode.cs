@@ -2,7 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMain : Singleton<GameMain> {
+public class GameMode : ModeBase<GameMode> {
+	protected override void mode_start()
+	{
+	}
+
+	protected override void mode_end()
+	{
+	}
 
 	public int m_iCount;
 
