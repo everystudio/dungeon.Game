@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ModeManager : Singleton<ModeManager> {
-
 	[SerializeField]
 	private string Mode;
+
+	public ModeBase GetMode(string _strModeName)
+	{
+		ModeBase ret = null;
+		modeDict.TryGetValue(_strModeName, out ret);
+		return ret;
+	}
+
+	public ModeBase currentMode;
 
 	[SerializeField]
 	private Camera DungeonCamera;
@@ -18,6 +26,18 @@ public class ModeManager : Singleton<ModeManager> {
 		{
 			return;
 		}
+		if( currentMode != null)
+		{
+			currentMode.ModeEnd();
+		}
+
+		currentMode = GetMode(_strMode);
+		if(currentMode != null)
+		{
+			currentMode.ModeStart();
+		}
+
+		/*
 		switch(_strMode)
 		{
 			case "Startup":
@@ -35,20 +55,29 @@ public class ModeManager : Singleton<ModeManager> {
 				DungeonCamera.gameObject.SetActive(false);
 				break;
 		}
+		*/
 	}
+
+	public Dictionary<string,ModeBase> modeDict = new Dictionary<string, ModeBase>();
 
 	public override void Initialize()
 	{
 		base.Initialize();
+
+		currentMode = null;
+		ModeBase[] modeArr = FindObjectsOfType<ModeBase>();
+		foreach(ModeBase mode in modeArr)
+		{
+			modeDict.Add(mode.gameObject.name, mode);
+		}
+		/*
+		*/
+		foreach (string key in modeDict.Keys)
+		{
+			Debug.LogError(key);
+		}
 		Mode = "none";
-		ChangeMode("Startup");
-
-		Invoke("testgame", 1.0f);
-	}
-
-	private void testgame()
-	{
-		UIAssistant.main.ShowPage("Main");
+		ChangeMode("StartupMode");
 	}
 
 }

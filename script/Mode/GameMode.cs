@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMode : ModeBase<GameMode> {
+public class GameMode : ModeBase {
+
+	[SerializeField]
+	private Camera cameraDungeon;
+
 	protected override void mode_start()
 	{
+		cameraDungeon.gameObject.SetActive(true);
 	}
 
 	protected override void mode_end()
 	{
+		cameraDungeon.gameObject.SetActive(false);
 	}
 
 	public int m_iCount;
 
-	public override void Initialize()
+	protected override void initialize()
 	{
 		m_iCount = 0;
-		base.Initialize();
 
 		PlayerCardHolder.Instance.OnFinishedMoveEvent.AddListener(OnFinishedMove);
 		PlayerCardHolder.Instance.OnEndReloadEvent.AddListener(OnEndReload);
