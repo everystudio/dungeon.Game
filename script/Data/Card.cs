@@ -70,7 +70,15 @@ public class Card : CsvData<CardParam> {
 				param.status = (int)STATUS.READY;
 			}
 		}
-
 	}
 
-}
+	public void AllClear(STATUS _eStatus)
+	{
+		foreach (CardParam param in list)
+		{
+			param.status = (int)_eStatus;
+		}
+		return;
+	}
+
+	}

@@ -12,11 +12,35 @@ public class FloorRoute : Singleton<FloorRoute> {
 
 	public StageParam m_stageParam;
 
-	void Start()
+	public void SetIndexPosition(int _iIndex)
 	{
-		m_iIndex = 0;
-	}
+		m_iIndex = _iIndex;
+		StageParam param = DataManager.Instance.stage.list[_iIndex];
+		m_stageParam = param;
 
+		Debug.LogError(_iIndex);
+		Debug.LogError(param.pz);
+		iTween.MoveTo(m_camMain.gameObject,
+			iTween.Hash(
+				"time", 0.65f,
+				"islocal", true,
+				"x", param.px,
+				"y", param.py,
+				"z", param.pz
+			)
+		);
+		iTween.RotateTo(m_camMain.gameObject,
+			iTween.Hash(
+				"time", 0.65f,
+				"islocal", true,
+				"x", param.rx,
+				"y", param.ry,
+				"z", param.rz
+			)
+		);
+
+
+	}
 	public void MoveStart(int _iNum)
 	{
 		m_iMoveRest = _iNum;

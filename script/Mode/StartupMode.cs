@@ -14,7 +14,17 @@ public class StartupMode : ModeBase {
 		Debug.LogError("startup mode.mode_start");
 
 
-		ModeManager.Instance.ChangeMode("CampMode");
+	}
+
+	void Update()
+	{
+		if(DataManager.Instance.IsReady)
+		{
+			ModeManager.Instance.ChangeMode("CampMode");
+
+			// この見方は破綻するきがする
+			gameObject.SetActive(false);
+		}
 	}
 
 	protected override void mode_end()

@@ -10,6 +10,10 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 	[SerializeField]
 	private GameObject[] m_posObjectArr;
 
+	public int HasCardNum()
+	{
+		return fieldCardList.Count;
+	} 
 	private List<IconBattleCard> fieldCardList = new List<IconBattleCard>();
 
 	public enum STEP
@@ -30,6 +34,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 	public UnityEvent OnFinishedMoveEvent = new UnityEvent();
 	public UnityEvent OnEndReloadEvent = new UnityEvent();
 	public UnityEvent OnEndShuffleEvent = new UnityEvent();
+	public IconBattleCard.EventIconBattleCard OnClickCardEvent = new IconBattleCard.EventIconBattleCard();
 
 	public void Reload()
 	{
@@ -89,17 +94,20 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 
 	public override void Initialize()
 	{
-		Invoke("_initialize", 0.1f);
-	}
-	private void _initialize() {
-		m_eStep = STEP.IDLE;
-		m_eStepPre = STEP.NONE;
-
 		foreach (GameObject obj in m_posObjectArr)
 		{
 			obj.transform.localScale = Vector3.zero;
 			obj.SetActive(false);
 		}
+		/*
+		Debug.LogError("PlayerCardHolder.Initialize");
+		Invoke("_initialize", 0.1f);
+		*/
+	}
+	public void GameStart() {
+		m_eStep = STEP.IDLE;
+		m_eStepPre = STEP.NONE;
+
 		base.Initialize();
 
 		List<CardParam> deckCardParam = new List<CardParam>();
@@ -173,22 +181,43 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 
 	private void OnClickCard( IconBattleCard _icon )
 	{
-		switch( m_eStep)
+		OnClickCardEvent.Invoke(_icon);
+		switch ( m_eStep)
 		{
 			case STEP.IDLE:
 				/*
 				_icon.RefreshDisp();
 				*/
+				/*
 				DataManager.Instance.SaveLock();
 				_icon.param.status = (int)Card.STATUS.USED;
 				_icon.OnActionBattleUsed.AddListener(OnActionBattleCardUsed);
 				_icon.ActionBattleUse();
 				m_eStep = STEP.MOVING;
+				*/
 				break;
 		}
 	}
 
+	public void RemoveCard(IconBattleCard _icon)
+	{
+		if (fieldCardList.Remove(_icon))
+		{
+			_icon.goTarget.SetActive(false);
+			foreach (IconBattleCard card in fieldCardList)
+			{
+				card.ResetPosition(0.1f, card.goTarget);
+			}
+			Destroy(_icon.gameObject);
+		}
+		else
+		{
+			throw new System.Exception("手持ちデッキに無いカードを除外しようとしました");
+		}
+		return;
+	}
 
+	/*
 	private void OnActionBattleCardUsed(IconBattleCard _icon)
 	{
 		_icon.OnActionBattleUsed.RemoveListener(OnActionBattleCardUsed);
@@ -209,36 +238,20 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 			throw new System.Exception("手持ちデッキに無いカードを除外しようとしました");
 		}
 	}
+	*/
 
+	/*
 	private void OnMoveFinished()
 	{
 		//Debug.LogError("OnMoveFinished");
 		FloorRoute.Instance.OnMoveFinished.RemoveListener(OnMoveFinished);
-		/*
-		if( 1 == fieldCardList.Count)
-		{
-			Reload();
-		}
-		else
-		{
-			//DataManager.Instance.SaveUnlock();
-		}
-		*/
-
 		// 外部から管理するための状態もしくはgamemainとかに伝える
 		m_eStep = STEP.MOVE_END;
 		//DataManager.Instance.SaveUnlock();
 
 		//Debug.LogError("please add move end action");
 		OnFinishedMoveEvent.Invoke();
-		/*
-		// リロードが必要
-		if (1 == fieldCardList.Count)
-		{
-			Reload();
-		}
-		*/
-
 	}
+	*/
 
 }

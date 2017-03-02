@@ -19,6 +19,8 @@ public class DataManager : DataManagerBase<DataManager> {
 	public bool m_bSave;
 	private bool m_bSavePre;
 
+	public bool IsReady;
+
 	public void SaveLock()
 	{
 		m_iSaveLock += 1;
@@ -40,11 +42,13 @@ public class DataManager : DataManagerBase<DataManager> {
 			return;
 		}
 		playerQuestDeck.Save();
+		playerQuestData.Save();
 	}
 
 
 	public override void Initialize()
 	{
+		IsReady = false;
 		m_iSaveLock = 0;
 		// これは消しません
 		SetDontDestroy(true);
@@ -67,8 +71,11 @@ public class DataManager : DataManagerBase<DataManager> {
 
 		// 読めなかったとき対応が必要
 		playerQuestData = new DataKvs();
-		playerQuestData.LoadMulti("data/player_quest_data");
 		playerQuestData.SetSaveFilename("data/player_quest_data");
+		if ( playerQuestData.LoadMulti("data/player_quest_data") == false)
+		{
+			playerQuestData.Save();
+		}
 
 		Debug.LogError("初期デッキデータが必要になります");
 		playerQuestDeck = new Card();
@@ -86,6 +93,7 @@ public class DataManager : DataManagerBase<DataManager> {
 
 	private void OnRecieveStageData(List<StageParam> arg0)
 	{
+		IsReady = true;
 	}
 
 	public void onRecievedNetworkData(EveryStudioLibrary.TNetworkData _networkData)
