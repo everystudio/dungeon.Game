@@ -53,7 +53,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 		}
 		int iNokori = m_posObjectArr.Length - iIndex;
 
-		List<CardParam> add = DataManager.Instance.playerQuestDeck.ChoiceStatus(Card.STATUS.READY, iNokori);
+		List<CardParam> add = DataManager.Instance.gameQuestDeck.ChoiceStatus(Card.STATUS.READY, iNokori);
 
 		foreach(CardParam param in add)
 		{
@@ -87,7 +87,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 	// とりあえず演出とかはいったん無しで
 	public void ShuffleReload()
 	{
-		DataManager.Instance.playerQuestDeck.Shuffle();
+		DataManager.Instance.gameQuestDeck.Shuffle();
 		Reload();
 	}
 	*/
@@ -117,7 +117,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 
 		//　復帰処理とかなのでとりあえず復元させるだけ
 		m_bRequestShuffle = false;
-		foreach (CardParam param in DataManager.Instance.playerQuestDeck.list)
+		foreach (CardParam param in DataManager.Instance.gameQuestDeck.list)
 		{
 			if( param.status == 1 )
 			{

@@ -32,18 +32,18 @@ public class GameMode : ModeBase {
 
 	private void gameCleanStart()
 	{
-		DataManager.Instance.playerQuestData.WriteInt("position_index", 0);
-		DataManager.Instance.playerQuestData.Write("game_status", "playing");
-		DataManager.Instance.playerQuestData.WriteInt("deck_max", 5);
-		DataManager.Instance.playerQuestData.WriteInt("reload_card", 2);
+		DataManager.Instance.gameQuestData.WriteInt("position_index", 0);
+		DataManager.Instance.gameQuestData.Write("game_status", "playing");
+		DataManager.Instance.gameQuestData.WriteInt("deck_max", 5);
+		DataManager.Instance.gameQuestData.WriteInt("reload_card", 2);
 
-		DataManager.Instance.playerQuestData.WriteInt("reload_limit", -1);		// レギュレーション系
-		DataManager.Instance.playerQuestData.WriteInt("shuffle_limit", -1);      // レギュレーション系
+		DataManager.Instance.gameQuestData.WriteInt("reload_limit", -1);		// レギュレーション系
+		DataManager.Instance.gameQuestData.WriteInt("shuffle_limit", -1);      // レギュレーション系
 
-		DataManager.Instance.playerQuestDeck.AllClear(Card.STATUS.READY);
+		DataManager.Instance.gameQuestDeck.AllClear(Card.STATUS.READY);
 
 		// 直接５にしてますけど設定値を使うべき
-		List<CardParam> initial_cards = DataManager.Instance.playerQuestDeck.ChoiceStatus(Card.STATUS.READY, 5);
+		List<CardParam> initial_cards = DataManager.Instance.gameQuestDeck.ChoiceStatus(Card.STATUS.READY, 5);
 		foreach (CardParam param in initial_cards)
 		{
 			param.status = (int)Card.STATUS.FIELD;
@@ -57,10 +57,11 @@ public class GameMode : ModeBase {
 
 	protected override void mode_start()
 	{
+		UIAssistant.main.ShowPage("QuestIdle");
 		Debug.LogError("GameMode.mode_start");
-		if( DataManager.Instance.playerQuestData.HasKey("game_status"))
+		if( DataManager.Instance.gameQuestData.HasKey("game_status"))
 		{
-			if(DataManager.Instance.playerQuestData.Read("game_status").Equals("playing"))
+			if(DataManager.Instance.gameQuestData.Read("game_status").Equals("playing"))
 			{
 				// 場所のリセット
 				gameResume();
@@ -75,7 +76,7 @@ public class GameMode : ModeBase {
 			gameCleanStart();
 		}
 		cameraDungeon.gameObject.SetActive(true);
-		int iPositionIndex = DataManager.Instance.playerQuestData.ReadInt("position_index");
+		int iPositionIndex = DataManager.Instance.gameQuestData.ReadInt("position_index");
 		FloorRoute.Instance.SetIndexPosition(iPositionIndex);
 
 
@@ -126,7 +127,7 @@ public class GameMode : ModeBase {
 	{
 		FloorRoute.Instance.OnMoveFinished.RemoveListener(OnMoveFinished);
 
-		DataManager.Instance.playerQuestData.WriteInt("position_index", FloorRoute.Instance.m_iIndex);
+		DataManager.Instance.gameQuestData.WriteInt("position_index", FloorRoute.Instance.m_iIndex);
 
 		m_eStatus = STATUS.MOVEEND;
 
@@ -136,7 +137,7 @@ public class GameMode : ModeBase {
 		//OnFinishedMoveEvent.Invoke();
 		DataManager.Instance.SaveUnlock();
 
-		int num = DataManager.Instance.playerQuestData.ReadInt("reload_card");
+		int num = DataManager.Instance.gameQuestData.ReadInt("reload_card");
 
 		Debug.LogError(string.Format("num:{0} hasnum:{1}", num, PlayerCardHolder.Instance.HasCardNum()));
 
@@ -159,11 +160,11 @@ public class GameMode : ModeBase {
 		PlayerCardHolder.Instance.OnEndReloadEvent.RemoveListener(OnEndReload);
 		Debug.LogError("GameMain.OnReloadEnd");
 
-		if(PlayerCardHolder.Instance.HasCardNum() < DataManager.Instance.playerQuestData.ReadInt("deck_max"))
+		if(PlayerCardHolder.Instance.HasCardNum() < DataManager.Instance.gameQuestData.ReadInt("deck_max"))
 		{
 			// シャッフルの回数制限
 
-			DataManager.Instance.playerQuestDeck.Shuffle();
+			DataManager.Instance.gameQuestDeck.Shuffle();
 
 			PlayerCardHolder.Instance.OnEndReloadEvent.AddListener(OnEndReload);
 			PlayerCardHolder.Instance.Reload();

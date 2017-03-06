@@ -19,8 +19,6 @@ public class StageParam : CsvDataParam
 
 public class Stage : CsvData<StageParam> {
 
-	private string m_strSpreadSheet;
-	private string m_strSheetName;
 	//private OnLoadedStageData m_callback;
 	//public delegate void OnLoadedStageData(List<StageParam> _paramList);
 	public void LoadStageData(string _strSpreadSheet, string _strSheetName )
@@ -30,6 +28,7 @@ public class Stage : CsvData<StageParam> {
 		//m_callback = _callback;
 		EveryStudioLibrary.CommonNetwork.Instance.RecieveSpreadSheeWorksheets(_strSpreadSheet, onRecievedWorksheet);
 	}
+	/*
 	public void onRecievedWorksheet(EveryStudioLibrary.TNetworkData _networkData)
 	{
 		string sheet_id = EveryStudioLibrary.CommonNetwork.ParseSpreadSheetSerial(m_strSpreadSheet, m_strSheetName, _networkData.m_strData);
@@ -38,6 +37,7 @@ public class Stage : CsvData<StageParam> {
 
 		//EveryStudioLibrary.CommonNetwork.Instance.RecieveSpreadSheet(m_strSpreadSheet, sheet_id, onRecievedNetworkData);
 	}
+	*/
 	public void onRecievedNetworkData(EveryStudioLibrary.TNetworkData _networkData)
 	{
 

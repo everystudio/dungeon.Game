@@ -2,14 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
+public class EventIconPlayer : UnityEvent<IconPlayer>
+{
+}
 
 public class DataManager : DataManagerBase<DataManager> {
 
 	public List<CardParam> show_card_list;
 
-	public DataKvs playerQuestData;
-	public Card playerQuestDeck;
+	public Player playerData;
+	public PlayerMaster playerMaster;
+
+	public DataKvs gameQuestData;
+	public Card gameQuestDeck;
 
 	public Stage stage;
 
@@ -41,8 +49,8 @@ public class DataManager : DataManagerBase<DataManager> {
 			Debug.LogError("try save but lock now");
 			return;
 		}
-		playerQuestDeck.Save();
-		playerQuestData.Save();
+		gameQuestDeck.Save();
+		gameQuestData.Save();
 	}
 
 
@@ -70,51 +78,50 @@ public class DataManager : DataManagerBase<DataManager> {
 		}
 
 		// 読めなかったとき対応が必要
-		playerQuestData = new DataKvs();
-		playerQuestData.SetSaveFilename("data/player_quest_data");
-		if ( playerQuestData.LoadMulti("data/player_quest_data") == false)
+		gameQuestData = new DataKvs();
+		gameQuestData.SetSaveFilename("data/player_quest_data");
+		if ( gameQuestData.LoadMulti("data/player_quest_data") == false)
 		{
-			playerQuestData.Save();
+			gameQuestData.Save();
 		}
 
 		Debug.LogError("初期デッキデータが必要になります");
-		playerQuestDeck = new Card();
-		playerQuestDeck.LoadMulti("data/deck_quest");
-		playerQuestDeck.SetSaveFilename("data/deck_quest");
-
-		//string strUrl = string.Format("https://spreadsheets.google.com/feeds/worksheets/{0}/public/basic", "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I");
-		//EveryStudioLibrary.CommonNetwork.Instance.Recieve(strUrl, onRecievedNetworkData);
+		gameQuestDeck = new Card();
+		gameQuestDeck.LoadMulti("data/deck_quest");
+		gameQuestDeck.SetSaveFilename("data/deck_quest");
 
 		stage = new Stage();
 		stage.OnRecieveData.AddListener(OnRecieveStageData);
 		stage.LoadStageData("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I", "stage1-1");
 		ftime = 0.0f;
+
+		playerMaster = new PlayerMaster();
+		playerMaster.OnRecieveData.AddListener(OnRecievePlayerMaster);
+		playerMaster.SpreadSheet("15oWONkEF1GVKVGwU6GQEpZkPLGUdADItm9PMftpBpzE", "player");
+
 	}
 
 	private void OnRecieveStageData(List<StageParam> arg0)
 	{
 		IsReady = true;
 	}
-
-	public void onRecievedNetworkData(EveryStudioLibrary.TNetworkData _networkData)
+	private void OnRecievePlayerMaster(List<PlayerMasterParam> paramList )
 	{
 		/*
-		Debug.LogError(_networkData.m_strData);
-
-		int index = _networkData.m_strData.IndexOf("stage1-1");
-
-		int index2 = _networkData.m_strData.IndexOf("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/", index);
-		int index3 = _networkData.m_strData.IndexOf("/", index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length);
-		Debug.LogError(index);
-		Debug.LogError(index2);
-		Debug.LogError(index3);
-		Debug.LogError(_networkData.m_strData.Substring(index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length, index3 - (index2 + "13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I/".Length)));
+		Debug.LogError("OnRecievePlayerMaster");
+		foreach(PlayerMasterParam param in playerMaster.list) 
+		{
+			Debug.LogError(param.name);
+		}
 		*/
-
+	}
+	/*
+	public void onRecievedNetworkData(EveryStudioLibrary.TNetworkData _networkData)
+	{
 		string ret = EveryStudioLibrary.CommonNetwork.ParseSpreadSheetSerial("13CqWTURQlBHQY3F1_7vcFbiRoQarUIxnpNe5ibt8P-I", "stage1-1", _networkData.m_strData);
 		Debug.LogError(ret);
-
 	}
+	*/
 
 
 

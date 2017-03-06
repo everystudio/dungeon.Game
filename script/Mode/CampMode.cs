@@ -27,12 +27,9 @@ public class CampMode : ModeBase {
 	{
 		UIAssistant.main.ShowPage("CampMain");
 
-		Invoke("gotogame", 1.5f);
-	}
 
-	private void gotogame()
-	{
-		ModeManager.Instance.ChangeMode("GameMode");
+
+		//Invoke("gotogame", 1.5f);
 	}
 
 	protected override void mode_end()
