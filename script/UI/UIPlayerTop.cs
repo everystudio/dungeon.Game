@@ -57,6 +57,8 @@ public class UIPlayerTop : CPanel {
 		m_selectingPlayer = null;
 		base.panelStart();
 
+		OnChangeOrientation(DeviceOrientationDetector.Instance.orientation);
+
 		IconPlayer[] iconPlayerArr = rtContents.gameObject.GetComponentsInChildren<IconPlayer>();
 		foreach( IconPlayer icon in iconPlayerArr)
 		{

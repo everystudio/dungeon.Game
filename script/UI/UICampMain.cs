@@ -63,26 +63,27 @@ public class UICampMain : CPanel
 			rtRootShopBanner.pivot = new Vector2(0.5f, 0.5f);
 			rtRootShopBanner.sizeDelta = new Vector2(0, 100);
 
-			m_goButtonShop.transform.parent = rtButtonRight.transform;
-			m_goButtonGacha.transform.parent = rtButtonRight.transform;
+			//m_goButtonShop.transform.parent = rtButtonRight.transform;
+			//m_goButtonGacha.transform.parent = rtButtonRight.transform;
 
 			//CheckRectTransform(rtChara, "rtChara");
 			rtChara.pivot = new Vector2(0.5f, 0.5f);
 			rtChara.anchorMin = new Vector2(0.5f, 0.5f);
 			rtChara.anchorMax = new Vector2(0.5f, 0.5f);
-			rtChara.offsetMin = new Vector2(-150, -300);
-			rtChara.offsetMax = new Vector2(150, 300);
-			rtChara.sizeDelta = new Vector2(300, 600);
+			rtChara.offsetMin = new Vector2(-300, -400);
+			rtChara.offsetMax = new Vector2(300, 400);
+			rtChara.sizeDelta = new Vector2(800,600);
 		}
 		else
 		{
-			//CheckRectTransform(rtRootMenu, "rtRootMenu");
-			rtRootMenu.pivot = new Vector2(0.5f, 0.5f);
+			CheckRectTransform(rtRootMenu, "rtRootMenu");
+			rtRootMenu.pivot = new Vector2(0.5f, 1);
 			rtRootMenu.anchorMin = new Vector2(0, 1);
 			rtRootMenu.anchorMax = new Vector2(1, 1);
-			rtRootMenu.offsetMin = new Vector2(0, -262);
-			rtRootMenu.offsetMax = new Vector2(0, -162);
-			rtRootMenu.sizeDelta = new Vector2(0, 100);
+			rtRootMenu.offsetMin = new Vector2(0, -230);
+			rtRootMenu.offsetMax = new Vector2(0, -80);
+			rtRootMenu.sizeDelta = new Vector2(0, 150);
+
 			//CheckRectTransform(rtRootShopBanner, "rtRootShopBanner");
 			rtRootShopBanner.anchorMin = new Vector2(0, 0);
 			rtRootShopBanner.anchorMax = new Vector2(1, 0);
@@ -91,16 +92,24 @@ public class UICampMain : CPanel
 			rtRootShopBanner.pivot = new Vector2(0.5f, 0.5f);
 			rtRootShopBanner.sizeDelta = new Vector2(0, 100);
 
-			m_goButtonShop.transform.parent = rtButtonLeft.transform;
-			m_goButtonGacha.transform.parent = rtButtonLeft.transform;
+			//m_goButtonShop.transform.parent = rtButtonLeft.transform;
+			//m_goButtonGacha.transform.parent = rtButtonLeft.transform;
 
-			//CheckRectTransform(rtChara, "rtChara");
+			CheckRectTransform(rtChara, "rtChara");
+			rtChara.pivot = new Vector2(0.5f, 0.5f);
+			rtChara.anchorMin = new Vector2(0.5f, 0.5f);
+			rtChara.anchorMax = new Vector2(0.5f, 0.5f);
+			rtChara.offsetMin = new Vector2(-400, -300);
+			rtChara.offsetMax = new Vector2(400, 300);
+			rtChara.sizeDelta = new Vector2(800, 600);
+			/*
 			rtChara.pivot = new Vector2(1, 0);
 			rtChara.anchorMin = new Vector2(1, 0);
 			rtChara.anchorMax = new Vector2(1, 0);
 			rtChara.offsetMin = new Vector2(-300, 240);
 			rtChara.offsetMax = new Vector2(0, 840);
 			rtChara.sizeDelta = new Vector2(300, 600);
+			*/
 		}
 	}
 }
