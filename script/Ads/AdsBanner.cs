@@ -27,16 +27,19 @@ public class AdsBanner : MonoBehaviour {
 		Debug.LogError(string.Format("showbanner:_bFlag={0} , hidecount={1}", _bFlag,m_iHideCount));
 		if(_bFlag)
 		{
+			/*
 			m_iHideCount -= 1;
 			if(m_iHideCount <= 0)
 			{
 				m_iHideCount = 0;
 				showAdBanner(DeviceOrientationDetector.Instance.orientation);
 			}
+			*/
+			showAdBanner(DeviceOrientationDetector.Instance.orientation);
 		}
 		else
 		{
-			if( 0 == m_iHideCount)
+			//if( 0 == m_iHideCount)
 			{
 				if (viewYoko != null)
 				{
@@ -61,7 +64,7 @@ public class AdsBanner : MonoBehaviour {
 			}
 			if (viewTate == null)
 			{
-				BannerView bannerViewTate = new BannerView(adUnitIdTate, AdSize.Banner, AdPosition.Top);
+				BannerView bannerViewTate = new BannerView(adUnitIdTate, AdSize.Banner, AdPosition.Bottom);
 				// Create an empty ad request.
 				AdRequest requestTate = new AdRequest.Builder()
 					.AddTestDevice("B58A62380C00BF9DC7BA75C756B5F550")

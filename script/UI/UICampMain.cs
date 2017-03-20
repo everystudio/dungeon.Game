@@ -76,7 +76,7 @@ public class UICampMain : CPanel
 		}
 		else
 		{
-			CheckRectTransform(rtRootMenu, "rtRootMenu");
+			//CheckRectTransform(rtRootMenu, "rtRootMenu");
 			rtRootMenu.pivot = new Vector2(0.5f, 1);
 			rtRootMenu.anchorMin = new Vector2(0, 1);
 			rtRootMenu.anchorMax = new Vector2(1, 1);
@@ -95,7 +95,7 @@ public class UICampMain : CPanel
 			//m_goButtonShop.transform.parent = rtButtonLeft.transform;
 			//m_goButtonGacha.transform.parent = rtButtonLeft.transform;
 
-			CheckRectTransform(rtChara, "rtChara");
+			//CheckRectTransform(rtChara, "rtChara");
 			rtChara.pivot = new Vector2(0.5f, 0.5f);
 			rtChara.anchorMin = new Vector2(0.5f, 0.5f);
 			rtChara.anchorMax = new Vector2(0.5f, 0.5f);

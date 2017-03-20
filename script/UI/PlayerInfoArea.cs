@@ -22,6 +22,7 @@ public class PlayerInfoArea : MonoBehaviourEx {
 	void Awake()
 	{
 		m_rtSelf = gameObject.GetComponent<RectTransform>();
+		//CheckRectTransform(m_rtSelf, "m_rtSelf");
 		DeviceOrientationDetector.Instance.OnChangeOrientation.AddListener(OnChangeOrientation);
 		OnChangeOrientation(DeviceOrientationDetector.Instance.orientation);
 	}
@@ -31,11 +32,12 @@ public class PlayerInfoArea : MonoBehaviourEx {
 		if(_orientaiton == DeviceOrientationDetector.ORIENTATION.YOKO)
 		{
 			//CheckRectTransform(m_rtSelf, "m_rtSelf");
-			m_rtSelf.anchorMin = new Vector2(0, 0);
-			m_rtSelf.anchorMax = new Vector2(1, 0);
-			m_rtSelf.offsetMin = new Vector2(0, 0);
-			m_rtSelf.offsetMax = new Vector2(0, 70);
-			m_rtSelf.sizeDelta = new Vector2(0, 70);
+			m_rtSelf.pivot = new Vector2(0.5000f, 0.0000f);
+			m_rtSelf.anchorMin = new Vector2(0.0000f, 0.0000f);
+			m_rtSelf.anchorMax = new Vector2(1.0000f, 0.0000f);
+			m_rtSelf.offsetMin = new Vector2(0.0000f, 0.0000f);
+			m_rtSelf.offsetMax = new Vector2(0.0000f, 70.0000f);
+			m_rtSelf.sizeDelta = new Vector2(0.0000f, 70.0000f);
 			//CheckRectTransform(m_rtAreaPlayer, "m_rtAreaPlayer");
 			m_rtAreaPlayer.anchorMin = new Vector2(0, 0);
 			m_rtAreaPlayer.anchorMax = new Vector2(0, 0);
@@ -60,10 +62,11 @@ public class PlayerInfoArea : MonoBehaviourEx {
 		else
 		{
 			//CheckRectTransform(m_rtSelf, "m_rtSelf");
+			m_rtSelf.pivot = new Vector2(0.5f, 0);
 			m_rtSelf.anchorMin = new Vector2(0, 0);
 			m_rtSelf.anchorMax = new Vector2(1, 0);
-			m_rtSelf.offsetMin = new Vector2(0, 0);
-			m_rtSelf.offsetMax = new Vector2(0, 70);
+			m_rtSelf.offsetMin = new Vector2(0, 85);
+			m_rtSelf.offsetMax = new Vector2(0, 155);
 			m_rtSelf.sizeDelta = new Vector2(0, 70);
 			//CheckRectTransform(m_rtAreaPlayer, "m_rtAreaPlayer");
 			m_rtAreaPlayer.anchorMin = new Vector2(0, 0);

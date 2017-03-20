@@ -12,12 +12,21 @@ public class AdsManager : Singleton<AdsManager>
 	void loadedScene(Scene scenename, LoadSceneMode SceneMode)
 	{
 		Debug.LogError("今のSceneの名前 = " + scenename.name);
-		setup(scenename.name);
+		//setup(scenename.name);
+	}
+
+	public void OnShowPage( string _strName)
+	{
+		Debug.Log(string.Format("pagename:{0}", _strName));
+		Show(_strName);
 	}
 	public override void Initialize()
 	{
 		m_adsBannerGameBottom = null;
 		//Debug.LogError(SceneManager.GetActiveScene().name);
+
+		Show(UIAssistant.main.GetCurrentPage());
+		UIAssistant.onShowPage += OnShowPage;
 		SceneManager.sceneLoaded += loadedScene;
 		Debug.LogError("AdsManager.Initialize");
 
@@ -40,6 +49,15 @@ public class AdsManager : Singleton<AdsManager>
 			Destroy(m_adsBannerGameBottom);
 			m_adsBannerGameBottom = null;
 		}
+	}
+
+	public void Show( string _strName )
+	{
+		if (m_adsBannerGameBottom == null)
+		{
+			m_adsBannerGameBottom = gameObject.AddComponent<AdsBanner>();
+		}
+		m_adsBannerGameBottom.Show(true);
 	}
 
 	private void setup(string _strSceneName)

@@ -18,8 +18,8 @@ public class FloorRoute : Singleton<FloorRoute> {
 		StageParam param = DataManager.Instance.stage.list[_iIndex];
 		m_stageParam = param;
 
-		Debug.LogError(_iIndex);
-		Debug.LogError(param.pz);
+		//Debug.LogError(_iIndex);
+		//Debug.LogError(param.pz);
 		iTween.MoveTo(m_camMain.gameObject,
 			iTween.Hash(
 				"time", 0.65f,

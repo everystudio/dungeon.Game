@@ -27,7 +27,9 @@ public class IconBattleCard : MonoBehaviourEx {
 	private GameObject m_goUsed;
 
 	public GameObject goTarget;
-	
+
+	public bool m_bIsSetEvent;
+
 	//private float m_fAppearDelay;
 	public void ResetPosition( float _fDelay, GameObject _posReset )
 	{
@@ -67,6 +69,11 @@ public class IconBattleCard : MonoBehaviourEx {
 	}
 	public void Initialize(CardParam _param)
 	{
+		if ( m_bIsSetEvent == false)
+		{
+			DeviceOrientationDetector.Instance.OnChangeOrientation.AddListener(OnChangeOrientation);
+			OnChangeOrientation(DeviceOrientationDetector.Instance.orientation);
+		}
 		param = _param;
 		m_txtPower.text = string.Format("{0}", _param.power);
 		m_txtSpeed.text = string.Format("{0}", _param.speed);
@@ -131,6 +138,22 @@ public class IconBattleCard : MonoBehaviourEx {
 	private void endResetPosition()
 	{
 		OnEndResetPosition.Invoke(this);
+	}
+
+
+
+	private void OnChangeOrientation(DeviceOrientationDetector.ORIENTATION _orientaiton)
+	{
+		ResetPosition(0.05f, goTarget);
+
+		if (_orientaiton == DeviceOrientationDetector.ORIENTATION.YOKO)
+		{
+
+		}
+		else
+		{
+
+		}
 	}
 
 	/*
