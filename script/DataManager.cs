@@ -16,6 +16,9 @@ public class DataManager : DataManagerBase<DataManager> {
 	public Player playerData;
 	public PlayerMaster playerMaster;
 
+	public Partner partnerData;
+	public PartnerMaster partnerMaster;
+
 	public DataKvs gameQuestData;
 	public Card gameQuestDeck;
 
@@ -99,6 +102,18 @@ public class DataManager : DataManagerBase<DataManager> {
 		playerMaster.OnRecieveData.AddListener(OnRecievePlayerMaster);
 		playerMaster.SpreadSheet("15oWONkEF1GVKVGwU6GQEpZkPLGUdADItm9PMftpBpzE", "player");
 
+		partnerMaster = new PartnerMaster();
+		partnerMaster.OnRecieveData.AddListener(OnRecievePartnerMaster);
+		partnerMaster.SpreadSheet("15oWONkEF1GVKVGwU6GQEpZkPLGUdADItm9PMftpBpzE", "partner");
+
+		partnerData = new Partner();
+		partnerData.SetSaveFilename("data/data_partner");
+		if(partnerData.LoadMulti("data/data_partner") == false)
+		{
+			partnerData.Save();
+		}
+
+
 	}
 
 	private void OnRecieveStageData(List<StageParam> arg0)
@@ -110,6 +125,15 @@ public class DataManager : DataManagerBase<DataManager> {
 		/*
 		Debug.LogError("OnRecievePlayerMaster");
 		foreach(PlayerMasterParam param in playerMaster.list) 
+		{
+			Debug.LogError(param.name);
+		}
+		*/
+	}
+	private void OnRecievePartnerMaster(List<PartnerMasterParam> paramList)
+	{
+		/*
+		foreach (PartnerMasterParam param in paramList)
 		{
 			Debug.LogError(param.name);
 		}
