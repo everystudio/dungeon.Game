@@ -25,8 +25,8 @@ public class PlayerInfoArea : MonoBehaviourEx {
 	{
 		m_rtSelf = gameObject.GetComponent<RectTransform>();
 		//CheckRectTransform(m_rtSelf, "m_rtSelf");
-		DeviceOrientationDetector.Instance.OnChangeOrientation.AddListener(OnChangeOrientation);
-		OnChangeOrientation(DeviceOrientationDetector.Instance.orientation);
+		// DeviceOrientationDetector.Instance.OnChangeOrientation.AddListener(OnChangeOrientation);
+		//OnChangeOrientation(DeviceOrientationDetector.Instance.orientation);
 	}
 
 	private void OnChangeOrientation(DeviceOrientationDetector.ORIENTATION _orientaiton)

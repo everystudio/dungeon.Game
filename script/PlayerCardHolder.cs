@@ -99,8 +99,9 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 			obj.transform.localScale = Vector3.zero;
 			obj.SetActive(false);
 		}
-		/*
 		Debug.LogError("PlayerCardHolder.Initialize");
+		GameStart();
+		/*
 		Invoke("_initialize", 0.1f);
 		*/
 	}
@@ -157,7 +158,7 @@ public class PlayerCardHolder : Singleton<PlayerCardHolder> {
 		m_iCheckCount -= 1;
 		if (m_iCheckCount == 0)
 		{
-			//Debug.LogError("end of ResetPosition");
+			Debug.LogError("end of ResetPosition");
 			// ここでリロードが完了したことを伝える
 			/*
 			Debug.LogError("allend");
